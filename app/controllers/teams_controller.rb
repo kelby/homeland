@@ -8,8 +8,8 @@ class TeamsController < ApplicationController
   before_action :set_team, only: %i[show edit update destroy]
 
   def index
-    @total_team_count = Team.count
-    @active_teams = Team.fields_for_list.hot.limit(60)
+    @total_team_count = Company.count
+    @active_teams = Company.fields_for_list.hot.limit(60)
   end
 
   def show
@@ -17,11 +17,11 @@ class TeamsController < ApplicationController
   end
 
   def new
-    @team = Team.new
+    @team = Company.new
   end
 
   def create
-    @team = Team.new(team_params)
+    @team = Company.new(team_params)
     @team.owner_id = current_user.id
     if @team.save
       redirect_to(edit_team_path(@team), notice: "创建成功")
@@ -50,6 +50,6 @@ class TeamsController < ApplicationController
   end
 
   def set_team
-    @team = Team.find_by_login!(params[:id])
+    @team = Company.find_by_login!(params[:id])
   end
 end

@@ -47,12 +47,12 @@ class Ability
 
   # VIP
   def roles_for_vip
-    can :create, Team
+    can :create, Company
   end
 
   # Mantainer
   def roles_for_maintainer
-    can :create, Team
+    can :create, Company
     can :manage, Node
     can :manage, Topic
     can :lock_node, Topic
@@ -98,7 +98,7 @@ class Ability
   end
 
   def roles_for_teams
-    can [:update, :destroy], Team do |team|
+    can [:update, :destroy], Company do |team|
       team.owner?(user)
     end
   end
@@ -114,6 +114,6 @@ class Ability
     can %i[read reply_to], Reply
     can :read, Photo
     can :read, Comment
-    can :read, Team
+    can :read, Company
   end
 end

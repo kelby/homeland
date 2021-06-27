@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   resources :comments
   resources :devices
-  resources :teams
+  resources :companies, controller: :teams
 
   root to: "topics#index"
   match "/uploads/:path(![large|lg|md|sm|xs])", to: "home#uploads", via: :get, constraints: {

@@ -4,7 +4,7 @@ class AddTeamUsersCountToUsers < ActiveRecord::Migration[5.0]
 
     User.reset_column_information
     say_with_time "Reset all teams' team_users counter cache" do
-      Team.select(:id).find_each { |team| Team.reset_counters(team.id, :team_users) }
+      Company.select(:id).find_each { |team| Company.reset_counters(team.id, :team_users) }
     end
   end
 

@@ -145,7 +145,7 @@ class User < ApplicationRecord
 
   def team_options
     return @team_options if defined? @team_options
-    teams = admin? ? Team.all : self.teams
+    teams = admin? ? Company.all : self.teams
     @team_options = teams.collect { |t| [t.name, t.id] }
   end
 

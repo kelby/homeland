@@ -169,7 +169,7 @@ class TopicsController < ApplicationController
   end
 
   def ability_team_id
-    team = Team.find_by_id(topic_params[:team_id])
+    team = Company.find_by_id(topic_params[:team_id])
     return nil if team.blank?
     return nil if cannot?(:show, team)
     team.id
