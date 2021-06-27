@@ -34,6 +34,8 @@ module Homeland
 
     attr_accessor :source_path
 
+    attr_accessor :display_names, :root_paths, :hidden_root
+
     def uninstallable?
       source_path.starts_with? Rails.root.join("plugins").to_s
     end

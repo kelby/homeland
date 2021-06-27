@@ -111,3 +111,5 @@ group :development, :test do
 
   gem "standard"
 end
+
+gem "typhoeus"

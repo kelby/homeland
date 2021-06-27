@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Team < User
+class Company < User
   has_one :profile, foreign_key: :user_id, dependent: :nullify
   has_many :replies, foreign_key: :user_id
   has_many :authorizations, foreign_key: :user_id
