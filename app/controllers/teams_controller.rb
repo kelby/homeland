@@ -24,7 +24,7 @@ class TeamsController < ApplicationController
     @team = Company.new(team_params)
     @team.owner_id = current_user.id
     if @team.save
-      redirect_to(edit_team_path(@team), notice: "创建成功")
+      redirect_to(edit_company_path(@team), notice: "创建成功")
     else
       render action: "new"
     end
@@ -35,7 +35,7 @@ class TeamsController < ApplicationController
 
   def update
     if @team.update(team_params)
-      redirect_to(edit_team_path(@team), notice: t("common.update_success"))
+      redirect_to(edit_company_path(@team), notice: t("common.update_success"))
     else
       # 转向正确的拼写
       @team.login = @team.login_was || @team.login
