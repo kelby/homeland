@@ -113,3 +113,4 @@ group :development, :test do
 end
 
 gem "typhoeus"
+gem "active_type"
