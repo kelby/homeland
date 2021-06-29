@@ -1,0 +1,68 @@
+// ============ Match ===============
+
+.vlr-rounds-row {
+  display: flex;
+  min-width: 0;
+  justify-content: space-between;
+  padding-bottom: 15px;
+}
+
+.vlr-rounds-row-col {
+  margin: 0 1px;
+  margin-left: 2px;
+}
+
+.vlr-rounds-row .team {
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  margin: 3px 0;
+  margin-right: 6px;
+  font-size: 11px;
+  width: 69px;
+}
+
+.rnd-num {
+  font-size: 9px;
+  text-align: center;
+  text-align: center;
+  height: 10px;
+  line-height: 10px;
+  color: #aaa;
+  margin-bottom: 5px;
+}
+
+.rnd-sq.mod-win {
+  background: #888;
+}
+
+.rnd-sq.mod-win.mod-ct {
+  background: #24b298;
+}
+
+.rnd-sq.mod-win.mod-t {
+  background: #e25d5a;
+}
+
+.rnd-sq {
+  background: #ddd;
+  width: 20px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 2px 1px;
+  margin: 3px 0;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.rnd-currscore {
+  text-align: center;
+  font-size: 9px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  width: 24px;
+  display: none;
+}
+
