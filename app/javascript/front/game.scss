@@ -66,3 +66,32 @@
   display: none;
 }
 
+.mod-win {
+  background: #e3ede7;
+}
+
+.mod-loss {
+  background: #efd9d7;
+}
+
+.match-histories-item-result {
+  .rf, .ra {
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.05);
+    display: inline-block;
+    padding: 7px 6px;
+    border-radius: 2px;
+    color: #888;
+    text-decoration: underline;
+  }
+}
+
+.match-histories-item-result.mod-win .rf {
+  color: #444;
+  font-weight: 700;
+}
+
+.match-histories-item-result.mod-loss .ra {
+  color: #444;
+  font-weight: 700;
+}
