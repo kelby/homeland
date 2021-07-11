@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_09_032709) do
+ActiveRecord::Schema.define(version: 2021_07_07_012301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,52 @@ ActiveRecord::Schema.define(version: 2021_04_09_032709) do
     t.datetime "updated_at", null: false
     t.index ["target_type", "target_id", "action_type"], name: "index_actions_on_target_type_and_target_id_and_action_type"
     t.index ["user_type", "user_id", "action_type"], name: "index_actions_on_user_type_and_user_id_and_action_type"
+  end
+
+  create_table "agent_abilities", force: :cascade do |t|
+    t.string "name"
+    t.string "key"
+    t.string "cost"
+    t.string "keybind"
+    t.string "description"
+    t.string "slot"
+    t.string "icon"
+    t.integer "charges_count"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "agent_id"
+    t.string "names", default: [], array: true
+    t.integer "seq_no"
+  end
+
+  create_table "agent_stats", force: :cascade do |t|
+    t.integer "agent_id"
+    t.bigint "kills"
+    t.bigint "deaths"
+    t.bigint "assists"
+    t.bigint "score"
+    t.bigint "wins"
+    t.bigint "first_bloods"
+    t.bigint "first_deaths"
+    t.bigint "last_kills"
+    t.bigint "rounds_played"
+    t.bigint "matches_played"
+    t.bigint "grenade_casts"
+    t.bigint "ability1_casts"
+    t.bigint "ability2_casts"
+    t.bigint "ultimate_casts"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "agents", force: :cascade do |t|
+    t.string "avatar"
+    t.string "name"
+    t.string "slug"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "code"
   end
 
   create_table "authorizations", id: :serial, force: :cascade do |t|
@@ -60,11 +106,179 @@ ActiveRecord::Schema.define(version: 2021_04_09_032709) do
     t.index ["user_id"], name: "index_devices_on_user_id"
   end
 
+  create_table "economies", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "match_game_id"
+    t.integer "team1_id"
+    t.integer "team2_id"
+    t.text "team1"
+    t.text "team2"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "economy_details", id: :bigint, default: -> { "nextval('econ_details_id_seq'::regclass)" }, force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "match_game_id"
+    t.integer "team1_id"
+    t.integer "team2_id"
+    t.text "team1"
+    t.text "team2"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "event_brackets", force: :cascade do |t|
+    t.string "title"
+    t.integer "event_id"
+    t.integer "event_stage_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "event_groups", force: :cascade do |t|
+    t.integer "event_id"
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "event_map_stats", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "map_id"
+    t.integer "counter"
+    t.string "atk_win"
+    t.string "def_win"
+    t.string "breach"
+    t.string "brimstone"
+    t.string "cypher"
+    t.string "jett"
+    t.string "omen"
+    t.string "phoenix"
+    t.string "raze"
+    t.string "sage"
+    t.string "sova"
+    t.string "viper"
+    t.string "reyna"
+    t.string "killjoy"
+    t.string "skye"
+    t.string "yoru"
+    t.string "astra"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "kayo"
+  end
+
+  create_table "event_map_team_agents", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "map_id"
+    t.integer "team_id"
+    t.string "team_pickes"
+    t.text "matches"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "matches_ids", default: [], array: true
+  end
+
+  create_table "event_parts", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "event_stage_id"
+    t.string "title"
+    t.string "matches_ids", default: [], array: true
+    t.integer "col_no"
+    t.string "line"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "event_bracket_id"
+    t.integer "container_no"
+  end
+
+  create_table "event_player_stats", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "player_id"
+    t.string "agents_ids", default: [], array: true
+    t.string "agents_note"
+    t.string "rnd"
+    t.string "acs"
+    t.string "kd"
+    t.string "adr"
+    t.string "kpr"
+    t.string "apr"
+    t.string "fkpr"
+    t.string "fdpr"
+    t.string "hs_persent"
+    t.string "cl_persent"
+    t.string "cl"
+    t.string "kmax"
+    t.integer "kmax_match_id"
+    t.string "k"
+    t.string "d"
+    t.string "a"
+    t.string "fk"
+    t.string "fd"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "event_stages", force: :cascade do |t|
+    t.string "title"
+    t.string "dates"
+    t.integer "seq_no"
+    t.string "date_start"
+    t.string "date_end"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "slug"
+    t.integer "event_id", null: false
+    t.string "title_abbr"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "status"
+    t.string "prize"
+    t.string "dates"
+    t.string "date_start"
+    t.string "date_end"
+    t.string "region"
+    t.string "addr_flag"
+    t.string "logo"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "prize_pool"
+    t.string "tournament_code"
+    t.integer "current_stage_id"
+    t.string "note"
+    t.text "about"
+    t.boolean "show_stages", default: false
+  end
+
   create_table "exception_tracks", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "group_members", force: :cascade do |t|
+    t.integer "team_id"
+    t.integer "team_group_id"
+    t.string "w"
+    t.string "l"
+    t.string "t"
+    t.string "pct"
+    t.string "rf_ra"
+    t.string "rd"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "head_to_heads", force: :cascade do |t|
+    t.integer "match_id"
+    t.string "matches_ids", default: [], array: true
+    t.text "datas"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "locations", id: :serial, force: :cascade do |t|
@@ -73,6 +287,154 @@ ActiveRecord::Schema.define(version: 2021_04_09_032709) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["name"], name: "index_locations_on_name"
+  end
+
+  create_table "map_stats", force: :cascade do |t|
+    t.integer "map_id"
+    t.bigint "matches_played"
+    t.bigint "rounds_played"
+    t.bigint "attacking_rounds_won"
+    t.bigint "defending_rounds_won"
+    t.bigint "successful_plants_a"
+    t.bigint "successful_plants_b"
+    t.bigint "successful_defuses_a"
+    t.bigint "successful_defuses_b"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "maps", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "logo"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "match_econs", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "game_id"
+    t.string "team1"
+    t.string "team2"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "match_game_agents", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "match_game_id"
+    t.integer "team1_id"
+    t.integer "team2_id"
+    t.integer "map_id"
+    t.string "team1_agents"
+    t.string "team2_agents"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "event_id"
+  end
+
+  create_table "match_game_stats", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "match_game_id"
+    t.text "team1"
+    t.text "team2"
+    t.text "map"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "match_games", force: :cascade do |t|
+    t.string "name"
+    t.integer "game_no"
+    t.integer "match_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "disabled"
+  end
+
+  create_table "match_map_stats", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "match_id"
+    t.integer "map_id"
+    t.string "breach"
+    t.string "brimstone"
+    t.string "cypher"
+    t.string "jett"
+    t.string "omen"
+    t.string "phoenix"
+    t.string "raze"
+    t.string "sage"
+    t.string "sova"
+    t.string "viper"
+    t.string "reyna"
+    t.string "killjoy"
+    t.string "skye"
+    t.string "yoru"
+    t.string "astra"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "match_past_matches", force: :cascade do |t|
+    t.integer "match_id"
+    t.text "team1"
+    t.text "team2"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "team1_matches_ids", default: [], array: true
+    t.string "team2_matches_ids", default: [], array: true
+  end
+
+  create_table "match_players", force: :cascade do |t|
+    t.integer "match_id"
+    t.string "team1_players_ids", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "match_game_id", default: 0
+    t.string "team2_players_ids", default: [], array: true
+    t.string "team1_players_names", default: [], array: true
+    t.string "team2_players_names", default: [], array: true
+  end
+
+  create_table "match_players_stats", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "match_game_id"
+    t.text "team1"
+    t.text "team2"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "match_rounds_stats", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "match_id"
+    t.integer "match_game_id"
+    t.text "team1"
+    t.text "team2"
+    t.text "rounds"
+  end
+
+  create_table "matches", force: :cascade do |t|
+    t.date "date"
+    t.datetime "datetime"
+    t.string "status"
+    t.integer "event_id"
+    t.string "stage"
+    t.string "part"
+    t.integer "bo"
+    t.integer "team1_id"
+    t.integer "team2_id"
+    t.text "team1"
+    t.text "team2"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "status_note"
+    t.string "team1_players_ids", default: [], array: true
+    t.string "team2_players_ids", default: [], array: true
+    t.string "team1_players_names", default: [], array: true
+    t.string "team2_players_names", default: [], array: true
+    t.integer "event_stage_id"
   end
 
   create_table "nodes", id: :serial, force: :cascade do |t|
@@ -184,6 +546,15 @@ ActiveRecord::Schema.define(version: 2021_04_09_032709) do
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
+  create_table "participating_teams", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "event_stage_id"
+    t.string "teams_ids", default: [], array: true
+    t.string "notes", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "photos", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.string "image", null: false
@@ -192,12 +563,157 @@ ActiveRecord::Schema.define(version: 2021_04_09_032709) do
     t.index ["user_id"], name: "index_photos_on_user_id"
   end
 
+  create_table "player_adv_stats", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "match_game_id"
+    t.integer "team_id"
+    t.integer "player_id"
+    t.string "agent"
+    t.string "adv_2k"
+    t.string "adv_3k"
+    t.string "adv_4k"
+    t.string "adv_5k"
+    t.string "adv_1v1"
+    t.string "adv_1v2"
+    t.string "adv_1v3"
+    t.string "adv_1v4"
+    t.string "adv_1v5"
+    t.string "econ"
+    t.string "pl"
+    t.string "de"
+    t.text "more"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "seq_no"
+  end
+
+  create_table "player_agent_stats", force: :cascade do |t|
+    t.integer "player_id"
+    t.integer "agent_id"
+    t.string "usage"
+    t.string "rnd"
+    t.string "acs"
+    t.string "kd"
+    t.string "adr"
+    t.string "kpr"
+    t.string "apr"
+    t.string "fkpr"
+    t.string "fdpr"
+    t.string "k"
+    t.string "d"
+    t.string "a"
+    t.string "fk"
+    t.string "fd"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "player_history_matches", force: :cascade do |t|
+    t.integer "player_id"
+    t.integer "match_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "player_kills_stats", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "match_game_id"
+    t.string "team1"
+    t.string "team2"
+    t.string "all_kills"
+    t.string "first_kills"
+    t.string "op_kills"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "player_stats", force: :cascade do |t|
+    t.integer "player_id"
+    t.string "agents_ids", array: true
+    t.string "agents_note"
+    t.string "rnd"
+    t.string "acs"
+    t.string "kd"
+    t.string "adr"
+    t.string "kpr"
+    t.string "apr"
+    t.string "fkpr"
+    t.string "fdpr"
+    t.string "hs_persent"
+    t.string "cl_persent"
+    t.string "cl"
+    t.string "kmax"
+    t.integer "kmax_match_id"
+    t.string "k"
+    t.string "d"
+    t.string "a"
+    t.string "fk"
+    t.string "fd"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "team_abbr"
+  end
+
+  create_table "player_teams", force: :cascade do |t|
+    t.integer "player_id"
+    t.integer "team_id"
+    t.string "joined_in"
+    t.string "left_in"
+    t.integer "seq"
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "duration"
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.string "name"
+    t.string "real_name"
+    t.string "addr"
+    t.string "addr_flag"
+    t.string "avatar"
+    t.string "current_teams_ids", default: [], array: true
+    t.string "past_teams_ids", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "role"
+    t.string "total_winnings"
+    t.string "aliases_name"
+    t.text "socials"
+  end
+
+  create_table "prize_distributions", force: :cascade do |t|
+    t.integer "event_id"
+    t.string "place"
+    t.string "prize"
+    t.string "circuit_points"
+    t.string "note"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "event_stage_id"
+    t.string "teams_ids", default: [], array: true
+    t.integer "seq_no"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.integer "user_id", null: false
     t.jsonb "contacts", default: {}, null: false
     t.jsonb "rewards", default: {}, null: false
     t.jsonb "preferences", default: {}, null: false
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
+  end
+
+  create_table "rating_histories", force: :cascade do |t|
+    t.integer "team_id"
+    t.string "rank"
+    t.string "region"
+    t.string "rating"
+    t.string "peak"
+    t.string "streak"
+    t.string "streak_type"
+    t.string "best"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "replies", id: :serial, force: :cascade do |t|
@@ -240,26 +756,93 @@ ActiveRecord::Schema.define(version: 2021_04_09_032709) do
     t.index ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true
   end
 
-  create_table "site_nodes", id: :serial, force: :cascade do |t|
-    t.string "name", null: false
-    t.integer "sort", default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["sort"], name: "index_site_nodes_on_sort"
+  create_table "sources", force: :cascade do |t|
+    t.string "name"
+    t.string "code"
+    t.integer "sourceable_id"
+    t.string "sourceable_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "sites", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "site_node_id"
-    t.string "name", null: false
-    t.string "url", null: false
-    t.string "desc"
-    t.datetime "deleted_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["site_node_id", "deleted_at"], name: "index_sites_on_site_node_id_and_deleted_at"
-    t.index ["site_node_id"], name: "index_sites_on_site_node_id"
-    t.index ["url"], name: "index_sites_on_url"
+  create_table "stage_series", force: :cascade do |t|
+    t.integer "event_id"
+    t.string "dates"
+    t.string "title"
+    t.string "slug"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "team_groups", force: :cascade do |t|
+    t.string "name"
+    t.integer "event_id"
+    t.integer "event_stage_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "teams_ids", default: [], array: true
+    t.string "matches_ids", default: [], array: true
+  end
+
+  create_table "team_map_agents", force: :cascade do |t|
+    t.integer "team_id"
+    t.integer "map_id"
+    t.string "agent_slugs"
+    t.string "matches_ids", default: [], array: true
+    t.string "match_game_ids", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "team_map_stats", force: :cascade do |t|
+    t.integer "team_id"
+    t.integer "map_id"
+    t.string "win"
+    t.string "w"
+    t.string "l"
+    t.string "atk_1st"
+    t.string "def_1st"
+    t.string "atk_rwin"
+    t.string "atk_rw"
+    t.string "atk_rl"
+    t.string "def_rwin"
+    t.string "def_rw"
+    t.string "def_rl"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "agent_compositions", default: ""
+    t.integer "counter"
+  end
+
+  create_table "team_rankings", force: :cascade do |t|
+    t.integer "team_id"
+    t.string "rank"
+    t.string "region"
+    t.string "streak"
+    t.string "rating"
+    t.string "shift"
+    t.string "scoring"
+    t.string "earnings"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "team_recent_results", force: :cascade do |t|
+    t.integer "team_id"
+    t.string "matches_ids"
+    t.text "datas"
+    t.integer "counter_more"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "team_upcoming_matches", force: :cascade do |t|
+    t.integer "team_id"
+    t.string "matches_ids"
+    t.text "datas"
+    t.integer "counter_more"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "team_users", id: :serial, force: :cascade do |t|
@@ -271,6 +854,25 @@ ActiveRecord::Schema.define(version: 2021_04_09_032709) do
     t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_team_users_on_team_id"
     t.index ["user_id"], name: "index_team_users_on_user_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "abbr"
+    t.string "region"
+    t.string "region_flag"
+    t.string "addr"
+    t.string "addr_flag"
+    t.string "logo"
+    t.string "current_rosters", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "alias_name"
+    t.integer "previously_team_id"
+    t.string "note"
+    t.string "total_winnings"
+    t.integer "currently_team_id"
+    t.text "socials"
   end
 
   create_table "topics", id: :serial, force: :cascade do |t|
@@ -304,6 +906,16 @@ ActiveRecord::Schema.define(version: 2021_04_09_032709) do
     t.index ["suggested_at"], name: "index_topics_on_suggested_at"
     t.index ["team_id"], name: "index_topics_on_team_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
+  end
+
+  create_table "transfers", force: :cascade do |t|
+    t.string "date"
+    t.integer "from_team_id"
+    t.integer "to_team_id"
+    t.string "action"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "player_id"
   end
 
   create_table "user_ssos", id: :serial, force: :cascade do |t|
@@ -365,6 +977,63 @@ ActiveRecord::Schema.define(version: 2021_04_09_032709) do
     t.index ["location"], name: "index_users_on_location"
     t.index ["login"], name: "index_users_on_login", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+  end
+
+  create_table "weapon_details", force: :cascade do |t|
+    t.integer "weapon_id"
+    t.decimal "fire_rate", precision: 10, scale: 2
+    t.integer "magazine_size"
+    t.decimal "run_speed_multiplier", precision: 10, scale: 2
+    t.decimal "equip_time_seconds", precision: 10, scale: 2
+    t.decimal "reload_time_seconds", precision: 10, scale: 2
+    t.decimal "first_bullet_accuracy", precision: 10, scale: 2
+    t.integer "shotgun_pellet_count"
+    t.string "fire_mode"
+    t.string "ads_stats"
+    t.string "alt_shotgun_stats"
+    t.string "air_burst_stats"
+    t.string "damage_ranges"
+    t.text "shop_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "weapon_skins", force: :cascade do |t|
+    t.integer "weapon_id"
+    t.string "code"
+    t.string "name"
+    t.string "icon"
+    t.text "chromas"
+    t.text "levels"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "weapon_stats", force: :cascade do |t|
+    t.integer "weapon_id"
+    t.bigint "kills"
+    t.bigint "alt_kills"
+    t.bigint "kill_distance"
+    t.bigint "damage"
+    t.bigint "damage_instances"
+    t.bigint "matches_played"
+    t.bigint "first_bloods"
+    t.bigint "last_kills"
+    t.bigint "headshots"
+    t.bigint "bodyshots"
+    t.bigint "legshots"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "weapons", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "logo"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "code"
+    t.string "icon"
   end
 
 end
