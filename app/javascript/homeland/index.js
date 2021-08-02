@@ -2,8 +2,6 @@ import jQuery from "jquery";
 window.jQuery = jQuery;
 window.$ = jQuery;
 window.Backbone = require("backbone");
-window.echarts = require("echarts");
-// window.Chart = require("chart.js");
 window._ = require("underscore");
 
 import Turbolinks from "turbolinks";
