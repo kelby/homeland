@@ -2,6 +2,8 @@ import jQuery from "jquery";
 window.jQuery = jQuery;
 window.$ = jQuery;
 window.Backbone = require("backbone");
+window.echarts = require("echarts");
+// window.Chart = require("chart.js");
 window._ = require("underscore");
 
 import Turbolinks from "turbolinks";
@@ -33,6 +35,9 @@ require("jquery.mobile-events");
 require("vendor/social-share-button");
 
 import { createConsumer } from "@rails/actioncable";
+import { Chart, registerables } from 'chart.js';
+window.Chart = Chart;
+Chart.register(...registerables);
 
 window.App = {
   turbolinks: false,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_07_012301) do
+ActiveRecord::Schema.define(version: 2021_07_18_030250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,9 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
   end
 
   create_table "agent_abilities", force: :cascade do |t|
+    t.integer "agent_id"
     t.string "name"
+    t.string "names", default: [], array: true
     t.string "key"
     t.string "cost"
     t.string "keybind"
@@ -37,11 +39,9 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "slot"
     t.string "icon"
     t.integer "charges_count"
+    t.integer "seq_no"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "agent_id"
-    t.string "names", default: [], array: true
-    t.integer "seq_no"
   end
 
   create_table "agent_stats", force: :cascade do |t|
@@ -71,7 +71,6 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "code"
   end
 
   create_table "authorizations", id: :serial, force: :cascade do |t|
@@ -117,7 +116,7 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "economy_details", id: :bigint, default: -> { "nextval('econ_details_id_seq'::regclass)" }, force: :cascade do |t|
+  create_table "economy_details", force: :cascade do |t|
     t.integer "match_id"
     t.integer "match_game_id"
     t.integer "team1_id"
@@ -132,13 +131,6 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "title"
     t.integer "event_id"
     t.integer "event_stage_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "event_groups", force: :cascade do |t|
-    t.integer "event_id"
-    t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -164,9 +156,9 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "skye"
     t.string "yoru"
     t.string "astra"
+    t.string "kayo"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "kayo"
   end
 
   create_table "event_map_team_agents", force: :cascade do |t|
@@ -175,22 +167,24 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.integer "team_id"
     t.string "team_pickes"
     t.text "matches"
+    t.string "matches_ids", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "matches_ids", default: [], array: true
   end
 
   create_table "event_parts", force: :cascade do |t|
     t.integer "event_id"
     t.integer "event_stage_id"
-    t.string "title"
-    t.string "matches_ids", default: [], array: true
-    t.integer "col_no"
-    t.string "line"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.integer "event_bracket_id"
     t.integer "container_no"
+    t.integer "col_no"
+    t.integer "seq_no"
+    t.string "title"
+    t.text "data_html"
+    t.string "title_html"
+    t.string "matches_ids", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "event_player_stats", force: :cascade do |t|
@@ -221,36 +215,37 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
   end
 
   create_table "event_stages", force: :cascade do |t|
+    t.integer "event_id"
     t.string "title"
+    t.string "title_abbr"
     t.string "dates"
     t.integer "seq_no"
     t.string "date_start"
     t.string "date_end"
+    t.string "slug"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "slug"
-    t.integer "event_id", null: false
-    t.string "title_abbr"
   end
 
   create_table "events", force: :cascade do |t|
     t.string "title", null: false
     t.string "status"
     t.string "prize"
+    t.string "prize_pool"
     t.string "dates"
     t.string "date_start"
     t.string "date_end"
     t.string "region"
     t.string "addr_flag"
     t.string "logo"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "prize_pool"
     t.string "tournament_code"
     t.integer "current_stage_id"
     t.string "note"
+    t.string "intro"
     t.text "about"
     t.boolean "show_stages", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "exception_tracks", id: :serial, force: :cascade do |t|
@@ -311,9 +306,16 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "match_bps", force: :cascade do |t|
+    t.integer "match_id"
+    t.string "datas"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "match_econs", force: :cascade do |t|
     t.integer "match_id"
-    t.integer "game_id"
+    t.integer "match_game_id"
     t.string "team1"
     t.string "team2"
     t.datetime "created_at", precision: 6, null: false
@@ -321,6 +323,7 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
   end
 
   create_table "match_game_agents", force: :cascade do |t|
+    t.integer "event_id"
     t.integer "match_id"
     t.integer "match_game_id"
     t.integer "team1_id"
@@ -330,12 +333,12 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "team2_agents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "event_id"
   end
 
   create_table "match_game_stats", force: :cascade do |t|
     t.integer "match_id"
     t.integer "match_game_id"
+    t.integer "game_no"
     t.text "team1"
     t.text "team2"
     t.text "map"
@@ -349,56 +352,33 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.integer "match_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "disabled"
-  end
-
-  create_table "match_map_stats", force: :cascade do |t|
-    t.integer "event_id"
-    t.integer "match_id"
-    t.integer "map_id"
-    t.string "breach"
-    t.string "brimstone"
-    t.string "cypher"
-    t.string "jett"
-    t.string "omen"
-    t.string "phoenix"
-    t.string "raze"
-    t.string "sage"
-    t.string "sova"
-    t.string "viper"
-    t.string "reyna"
-    t.string "killjoy"
-    t.string "skye"
-    t.string "yoru"
-    t.string "astra"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "match_past_matches", force: :cascade do |t|
     t.integer "match_id"
     t.text "team1"
     t.text "team2"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.string "team1_matches_ids", default: [], array: true
     t.string "team2_matches_ids", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "match_players", force: :cascade do |t|
     t.integer "match_id"
+    t.integer "match_game_id"
     t.string "team1_players_ids", default: [], array: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "match_game_id", default: 0
     t.string "team2_players_ids", default: [], array: true
     t.string "team1_players_names", default: [], array: true
     t.string "team2_players_names", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "match_players_stats", force: :cascade do |t|
     t.integer "match_id"
     t.integer "match_game_id"
+    t.integer "game_no"
     t.text "team1"
     t.text "team2"
     t.datetime "created_at", precision: 6, null: false
@@ -406,20 +386,22 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
   end
 
   create_table "match_rounds_stats", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.integer "match_id"
     t.integer "match_game_id"
     t.text "team1"
     t.text "team2"
     t.text "rounds"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "matches", force: :cascade do |t|
     t.date "date"
     t.datetime "datetime"
     t.string "status"
+    t.string "status_note"
     t.integer "event_id"
+    t.integer "event_stage_id"
     t.string "stage"
     t.string "part"
     t.integer "bo"
@@ -427,14 +409,12 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.integer "team2_id"
     t.text "team1"
     t.text "team2"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "status_note"
     t.string "team1_players_ids", default: [], array: true
     t.string "team2_players_ids", default: [], array: true
     t.string "team1_players_names", default: [], array: true
     t.string "team2_players_names", default: [], array: true
-    t.integer "event_stage_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "nodes", id: :serial, force: :cascade do |t|
@@ -555,6 +535,13 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "patches", force: :cascade do |t|
+    t.string "name"
+    t.string "note"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "photos", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.string "image", null: false
@@ -582,9 +569,9 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "pl"
     t.string "de"
     t.text "more"
+    t.integer "seq_no"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "seq_no"
   end
 
   create_table "player_agent_stats", force: :cascade do |t|
@@ -629,7 +616,7 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
 
   create_table "player_stats", force: :cascade do |t|
     t.integer "player_id"
-    t.string "agents_ids", array: true
+    t.string "agents_ids", default: [], array: true
     t.string "agents_note"
     t.string "rnd"
     t.string "acs"
@@ -649,9 +636,9 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "a"
     t.string "fk"
     t.string "fd"
+    t.string "team_abbr"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "team_abbr"
   end
 
   create_table "player_teams", force: :cascade do |t|
@@ -663,36 +650,36 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "duration"
   end
 
   create_table "players", force: :cascade do |t|
+    t.string "role"
     t.string "name"
     t.string "real_name"
+    t.string "alias_name"
     t.string "addr"
     t.string "addr_flag"
     t.string "avatar"
+    t.string "total_winnings"
+    t.text "socials"
+    t.string "aliases_name"
     t.string "current_teams_ids", default: [], array: true
     t.string "past_teams_ids", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "role"
-    t.string "total_winnings"
-    t.string "aliases_name"
-    t.text "socials"
   end
 
   create_table "prize_distributions", force: :cascade do |t|
     t.integer "event_id"
+    t.integer "event_stage_id"
     t.string "place"
     t.string "prize"
+    t.string "teams_ids", default: [], array: true
     t.string "circuit_points"
     t.string "note"
+    t.integer "seq_no"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "event_stage_id"
-    t.string "teams_ids", default: [], array: true
-    t.integer "seq_no"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -776,12 +763,13 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
 
   create_table "team_groups", force: :cascade do |t|
     t.string "name"
+    t.integer "team_id"
     t.integer "event_id"
     t.integer "event_stage_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.string "teams_ids", default: [], array: true
     t.string "matches_ids", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "team_map_agents", force: :cascade do |t|
@@ -808,10 +796,10 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "def_rwin"
     t.string "def_rw"
     t.string "def_rl"
+    t.integer "counter"
+    t.text "agent_compositions"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.text "agent_compositions", default: ""
-    t.integer "counter"
   end
 
   create_table "team_rankings", force: :cascade do |t|
@@ -823,24 +811,6 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "shift"
     t.string "scoring"
     t.string "earnings"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "team_recent_results", force: :cascade do |t|
-    t.integer "team_id"
-    t.string "matches_ids"
-    t.text "datas"
-    t.integer "counter_more"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "team_upcoming_matches", force: :cascade do |t|
-    t.integer "team_id"
-    t.string "matches_ids"
-    t.text "datas"
-    t.integer "counter_more"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -858,21 +828,21 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
 
   create_table "teams", force: :cascade do |t|
     t.string "name", null: false
+    t.string "alias_name"
     t.string "abbr"
     t.string "region"
     t.string "region_flag"
     t.string "addr"
     t.string "addr_flag"
     t.string "logo"
+    t.string "note"
+    t.string "total_winnings"
+    t.text "socials"
+    t.integer "previously_team_id"
+    t.integer "currently_team_id"
     t.string "current_rosters", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "alias_name"
-    t.integer "previously_team_id"
-    t.string "note"
-    t.string "total_winnings"
-    t.integer "currently_team_id"
-    t.text "socials"
   end
 
   create_table "topics", id: :serial, force: :cascade do |t|
@@ -913,9 +883,9 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.integer "from_team_id"
     t.integer "to_team_id"
     t.string "action"
+    t.integer "player_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "player_id"
   end
 
   create_table "user_ssos", id: :serial, force: :cascade do |t|
@@ -1030,10 +1000,10 @@ ActiveRecord::Schema.define(version: 2021_07_07_012301) do
     t.string "name"
     t.string "slug"
     t.string "logo"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.string "code"
     t.string "icon"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end

@@ -859,6 +859,12 @@ kbd {
       width: 768px;
     }
   }
+
+  @media (min-width: 768px) {
+    .modal-dialog.modal-xl {
+      max-width: 1140px !important;
+    }
+  }
 }
 
 .modal-backdrop {

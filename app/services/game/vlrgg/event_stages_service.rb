@@ -1,14 +1,17 @@
 module Game
   module Vlrgg
-    class AgentsService
-      def initialize(data='')
-        # @data = data
+    class EventStagesService
+      attr_accessor :id, :slug
+
+      def initialize(id, slug)
+        @id = id
+        @slug = slug
       end
 
       def run
-        response = Typhoeus.get("#{ENV['spider_uri']}/vlrgg/valorant/agents", timeout: 7)
+        response = Typhoeus.get("#{ENV['spider_uri']}/vlrgg/valorant/events/#{id}/stages/#{slug}", timeout: 9)
 
-        datas = if response.success?
+        data = if response.success?
           body = response.body
           # hell yeah
           begin
@@ -31,10 +34,10 @@ module Game
           # log("HTTP request failed: " + response.code.to_s)
         end
 
-        # unless datas.is_a?(Hash) && datas["_error"].present?
-          datas.map do |data|
-            ::Vlrgg::AgentsService.new(data).run
-          end
+        # unless data.is_a?(Hash) && data["_error"].present?
+          # datas.map do |data|
+            ::Vlrgg::EventDetailService.new(data).run
+          # end
         # end
       end
     end
