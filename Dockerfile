@@ -14,8 +14,11 @@ RUN mkdir -p /home/app &&\
 
 ADD Gemfile Gemfile.lock package.json yarn.lock /home/app/homeland/
 # Do not enable bundle deployment, use globalize mode, Puma tmp_restart need it.
-RUN bundle install && yarn &&\
-  find /usr/local/bundle -name tmp -type d -exec rm -rf {} + && \
+RUN bundle install
+# COPY node_modules /home/app/homeland/node_modules
+RUN yarn config delete proxy && yarn config set registry https://registry.npm.taobao.org
+RUN yarn --network-timeout 20000
+RUN find /usr/local/bundle -name tmp -type d -exec rm -rf {} + && \
   find /usr/local/bundle -name "*.gem" -type f -exec rm -rf {} +
 ADD . /home/app/homeland
 ADD ./config/nginx/ /etc/nginx
