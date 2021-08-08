@@ -36,3 +36,8 @@ vlrgg_team_rankings_service_job:
   queue: spider
   # args:
     # hard: "stuff"
+
+vlrgg_live_matches_service_job:
+  cron: "* * * * *"
+  class: "Scheduler::Vlrgg::LiveMatchesServiceJob"
+  queue: spider
