@@ -17,7 +17,7 @@ spam_cleanup:
   description: "Cleanup spam contents before 1 month ago"
 
 vlrgg_matches_service_job:
-  cron: "<%= Random.rand(0..59) %> * * * *"
+  cron: "* * * * *"
   class: "Scheduler::Vlrgg::MatchesServiceJob"
   queue: spider
   # args:
