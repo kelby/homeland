@@ -1,14 +1,17 @@
 module Game
   module Vlrgg
     class MatchesService
-      attr_accessor :id
+      attr_accessor :page_size
 
       def initialize(data='')
-        @id = data
+        @page_size = data
       end
 
-      def run
-        (1..3).to_a.each do |page|
+      def run(begin_page=1)
+        page_size ||= begin_page
+        results = []
+
+        (1..page_size).to_a.each do |page|
           response = Typhoeus.get("#{ENV['spider_uri']}/vlrgg/valorant/matches", params: {page: page}, timeout: 7)
 
           datas = if response.success?
@@ -34,12 +37,17 @@ module Game
             # log("HTTP request failed: " + response.code.to_s)
           end
 
+          result = []
           unless datas.is_a?(Hash) && datas["_error"].present?
             datas.map do |data|
-              ::Vlrgg::MatchResultsService.new(data, page: page).run
+              result = ::Vlrgg::MatchResultsService.new(data, page: page).run
             end
           end
+
+          results << result
         end
+
+        results
       end
     end
   end
