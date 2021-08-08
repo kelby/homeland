@@ -37,14 +37,12 @@ module Game
             # log("HTTP request failed: " + response.code.to_s)
           end
 
-          result = []
           unless datas.is_a?(Hash) && datas["_error"].present?
             datas.map do |data|
               result = ::Vlrgg::MatchResultsService.new(data, page: page).run
+              results << result
             end
           end
-
-          results << result
         end
 
         results
