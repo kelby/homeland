@@ -7,7 +7,7 @@ module Scheduler
         id_and_id_previously_changed = ::Game::Vlrgg::MatchesService.new().run
 
         id_and_id_previously_changed.flatten.map do |entry|
-          if entry[:id_previously_changed]
+          if entry[:id_previously_changed] || entry[:status_previously_changed]
             id = entry[:id]
             ::Game::Vlrgg::MatchDetailService.new(id).run
           end
