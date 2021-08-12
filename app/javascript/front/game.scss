@@ -9677,8 +9677,9 @@ i.mod-hidden {
 
 .event-team {
   // width: calc(25% - 8px);
-  margin: 4px;
-  position: relative; }
+  // margin: 4px;
+  // position: relative;
+  }
 
 .event-team:hover .event-team-players-mask {
   z-index: 1;

@@ -10,6 +10,8 @@ module Scheduler
           if entry[:id_previously_changed] || entry[:status_previously_changed]
             id = entry[:id]
             ::Game::Vlrgg::MatchDetailService.new(id).run
+            ::Game::Vlrgg::MatchPerformanceService.new(id).run
+            ::Game::Vlrgg::MatchEconomyService.new(id).run
           end
         end
       end
