@@ -8,7 +8,7 @@ module Game
       end
 
       def run
-        ['europe', 'north-america', 'asia-pacific', 'latin-america', 'oceania', 'korea', 'mena'].map do |region|
+        ['europe', 'north-america', 'asia-pacific', 'latin-america', 'oceania', 'korea', 'mena', 'game-changers'].map do |region|
           response = Typhoeus.get("#{ENV['spider_uri']}/vlrgg/valorant/rankings/#{region}", timeout: 9)
 
           datas = if response.success?

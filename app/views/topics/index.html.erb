@@ -1,5 +1,7 @@
 <% if action_name != "index" %>
   <% title_tag(@page_title || t('menu.topics')) %>
+<% else %>
+  <% title_tag "无畏契约（Valorant）社区" %>
 <% end %>
 <!-- @suggest_topics maybe nil or ActiveRecord::Relation, but we need an array -->
 <% @suggest_topics = @suggest_topics.to_a %>

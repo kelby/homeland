@@ -41,3 +41,10 @@ vlrgg_live_matches_service_job:
   cron: "* * * * *"
   class: "Scheduler::Vlrgg::LiveMatchesServiceJob"
   queue: spider
+
+vlrgg_team_service_job:
+  cron: "<%= Random.rand(0..59) %> * * * *"
+  class: "Scheduler::Vlrgg::TeamServiceJob"
+  queue: spider
+  # args:
+    # hard: "stuff"
