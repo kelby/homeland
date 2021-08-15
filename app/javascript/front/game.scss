@@ -66,13 +66,13 @@
   display: none;
 }
 
-.mod-win {
-  background: #e3ede7;
-}
+// .mod-win {
+//   background: #e3ede7;
+// }
 
-.mod-loss {
-  background: #efd9d7;
-}
+// .mod-loss {
+//   background: #efd9d7;
+// }
 
 .match-histories-item-result {
   .rf, .ra {
@@ -8971,7 +8971,7 @@ a.match-streams-btn-external {
     display: flex;
     justify-content: space-between; }
     .vm-stats-game-header .map {
-      width: 70px; }
+      width: 100px; }
     .vm-stats-game-header .picked {
       font-weight: 400;
       position: absolute;
@@ -10212,14 +10212,14 @@ tr.pr-matrix-row td.mod-picked {
 tr.pr-matrix-row td.mod-picked-lite {
   background: #e1e0f5; }
 
-tr.pr-matrix-row td.mod-win {
+tr.pr-matrix-row td.mod-win, tr.pr-matrix-row th.mod-win {
   background: #ecf8ef;
   text-align: left;
   padding-left: 10px;
   font-weight: 700;
   font-size: 11px; }
 
-tr.pr-matrix-row td.mod-loss {
+tr.pr-matrix-row td.mod-loss, tr.pr-matrix-row th.mod-loss {
   background: #f2e0de;
   text-align: left;
   padding-left: 10px;
@@ -10753,10 +10753,11 @@ td {
 .team-event-item-series {
   color: #888; }
 
-.team-rating-info {
-  display: flex;
-  padding: 20px;
-  padding-bottom: 0; }
+  // .team-rating-info {
+  // display: flex;
+  // padding: 20px;
+  // padding-bottom: 0;
+  // }
 
 .team-rating-info-section a {
   display: flex;
