@@ -46,5 +46,8 @@ vlrgg_team_service_job:
   cron: "<%= Random.rand(0..59) %> * * * *"
   class: "Scheduler::Vlrgg::TeamServiceJob"
   queue: spider
-  # args:
-    # hard: "stuff"
+
+vlrgg_events_service_job:
+  cron: "<%= Random.rand(0..59) %> */2 * * *"
+  class: "Scheduler::Vlrgg::EventsServiceJob"
+  queue: spider

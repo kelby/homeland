@@ -4583,7 +4583,7 @@ a.post-header-author:hover {
   }
 }
 
-.ml-eta.mod-completed, .ml-eta.mod-final {
+.ml-eta.mod-completed, .ml-eta.mod-final, .ml-eta.mod-forfeited {
   background: #888; }
 
 .match-histories-item-result {
@@ -7941,8 +7941,8 @@ th.rank-item-earnings {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 45px;
-  padding-bottom: 60px; }
+  padding-top: 15px;
+  padding-bottom: 20px; }
 
 .match-header-link {
   display: flex;
