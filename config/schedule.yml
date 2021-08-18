@@ -51,3 +51,8 @@ vlrgg_events_service_job:
   cron: "<%= Random.rand(0..59) %> */2 * * *"
   class: "Scheduler::Vlrgg::EventsServiceJob"
   queue: spider
+
+vlrgg_check_live_matches_job: # every 5th minute
+  cron: "*/5 * * * *"
+  class: "Scheduler::Vlrgg::CheckLiveMatchesJob"
+  queue: spider
