@@ -23,6 +23,10 @@ server {
     add_header Cache-Control public;
   }
 
+  location ~ ^/sitemap.xml.gz {
+    # if you already set root above, then the following line is not needed.
+  }
+
   location /404.png {
     root /etc/nginx/html;
     rewrite ^ /404.png break;
