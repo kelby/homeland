@@ -114,3 +114,6 @@ end
 
 gem "typhoeus"
 gem "active_type"
+
+gem "sitemap_generator"
+gem 'meta-tags'

@@ -1,4 +1,3 @@
-# NAME:     kelby/homeland
 FROM homeland/base:3.0.1-slim-buster
 
 ENV RAILS_ENV "production"
