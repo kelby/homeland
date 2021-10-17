@@ -3,6 +3,9 @@
 <% else %>
   <% title_tag "无畏契约（Valorant）社区" %>
 <% end %>
+
+<% set_meta_tags description: '无畏契约Valorant中文社区，瓦洛兰特电竞数据网。看比赛Matches，赛程、赛果，跟踪赛事Events，统计战队、选手，英雄、地图、武器等数据。' %>
+
 <!-- @suggest_topics maybe nil or ActiveRecord::Relation, but we need an array -->
 <% @suggest_topics = @suggest_topics.to_a %>
 <%= render "topics/node_info", node: @node %>

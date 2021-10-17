@@ -1,16 +1,7 @@
 <!--
-   _   _                      _                 _
-  | | | |                    | |               | |
-  | |_| | ___  _ __ ___   ___| | __ _ _ __   __| |
-  |  _  |/ _ \| '_ ` _ \ / _ \ |/ _` | '_ \ / _` |
-  | | | | (_) | | | | | |  __/ | (_| | | | | (_| |
-  \_| |_/\___/|_| |_| |_|\___|_|\__,_|_| |_|\__,_|
-  ------------------------------------------------
-            https://github.com/ruby-china/homeland
-
-  - Ruby:  <%= RUBY_VERSION %><%= "-p#{RUBY_PATCHLEVEL}" if defined? RUBY_PATCHLEVEL %>
-  - Rails: <%= Rails.version %>
-  - Homeland: <%= Homeland.version %>
+  DAWA打瓦-三天不打，上房揭瓦
+  --------------------------------
+            无畏契约Valorant瓦洛兰特
 -->
 <!DOCTYPE html>
 <html>
@@ -19,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="theme" content="<%= user_theme %>">
     <meta name="locale" content="<%= user_locale %>">
-    <title><%= content_for?(:title) ? yield(:title) : Setting.app_name %></title>
+    <%= display_meta_tags site: Setting.app_name, reverse: true, separator: "·" %>
     <meta name="apple-mobile-web-app-capable" content="no">
     <meta content='True' name='HandheldFriendly'>
     <link rel="alternate" type="application/rss+xml" title="Subscribe" href="<%= main_app.feed_topics_url %>">
