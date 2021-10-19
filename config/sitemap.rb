@@ -1,5 +1,5 @@
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "https://vlrgg.com"
+SitemapGenerator::Sitemap.default_host = Setting.base_url
 
 SitemapGenerator::Sitemap.create do
   # Rails.application.routes.url_helpers.root_path
