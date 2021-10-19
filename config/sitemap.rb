@@ -90,9 +90,9 @@ SitemapGenerator::Sitemap.create do
   end
 
   # Other
-  add Homeland::Wiki::Engine.routes.url_helpers.agents_path, :priority => 0.6
-  add Homeland::Wiki::Engine.routes.url_helpers.weapons_path, :priority => 0.6
-  add Homeland::Wiki::Engine.routes.url_helpers.maps_path, :priority => 0.6
+  add Homeland::Game::Engine.routes.url_helpers.agents_path, :priority => 0.6
+  add Homeland::Game::Engine.routes.url_helpers.weapons_path, :priority => 0.6
+  add Homeland::Game::Engine.routes.url_helpers.maps_path, :priority => 0.6
 
   #
   # Add all articles:
